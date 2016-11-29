@@ -59,17 +59,18 @@ function supprimerEleve(){
 }
 
 function addEleve(){
-  document.getElementById("main_menu").innerHTML="<div>Prenom:<br><input type='text' id='prenom' value=''><br>Nom:<br><input type='text' id='nom' value=''><br>Date de Naissance (aaaa-mm-dd):<br><input type='text' id='date' value=''><br>Sexe:<br><select id='sex' value=''><option value='masciu'>Masculin</option><option value='Feminin'>Féminin</option></select><br><button onClick='envoyerEleve();'>Envoyer</button></div> ";
+  document.getElementById("main_menu").innerHTML="<div>Prenom:<br><input type='text' id='prenom' value=''><br>Nom:<br><input type='text' id='nom' value=''><br>Date de Naissance (aaaa-mm-dd):<br><input type='text' id='date' value=''><br>Sexe:<br><select id='sex' value=''><option value='Masculin'>Masculin</option><option value='Feminin'>Féminin</option></select><br><button onClick='envoyerEleve();'>Envoyer</button></div> ";
 }
 
 function envoyerEleve(){
   var xmlhttp = new XMLHttpRequest();
-    var vars = "nom="+document.getElementById('nom').value+"&prenom="+document.getElementById('prenom').value+"&date="+document.getElementById('date').value+"&sexe="+document.getElementById('sex').value+"";
+    var vars = "nom="+document.getElementById('nom').value+"&prenom="+document.getElementById('prenom').value+"&date="+document.getElementById('date').value+"&sex="+document.getElementById('sex').value+"";
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             document.getElementById("main_menu").innerHTML = "insertion d'un élève dans la base";
         }
     };
     xmlhttp.open("POST", "classes/insertEleve.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send(vars);
 }
