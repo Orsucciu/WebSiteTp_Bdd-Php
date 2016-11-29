@@ -23,43 +23,56 @@ function voirEleves(){
   console.log(data);
 }
 
-function makeString()
-{
-    var text = "";
-    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-    for( var i=0; i < (Math.floor(Math.random() * (7 - 3 + 1)) + 3); i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-}
-
-function getNumClasseRand(){
+function supprimerEleve(id){
   var xmlhttp = new XMLHttpRequest();
-      xmlhttp.open("GET", "classes/getNumClasseRandom.php", true);
-      xmlhttp.send();
+    var vars = "id="+id;
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            alert("Supression de l'élève");
+        }
+    };
+    xmlhttp.open("POST", "classes/deleteEleve.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send(vars);
+    voirEleves();
 }
 
-function insertEleve(str){
+function getClasses(){
+  var data;
   var xmlhttp = new XMLHttpRequest();
-        vars = "nom="+makeString()+"&prenom="+makeString()+"&naissance=2016-01-01&sexe=masculin";
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("main_menu").innerHTML = "insertion d'un élève avec des données aléatoires";
-            }
-        };
-        xmlhttp.open("POST", "classes/insertEleve.php", true);
-        xmlhttp.send(vars);
+        //xmlhttp.onreadystatechange = function() {
+        //    if (this.readyState == 4 && this.status == 200) {
+                data = (this.responseText);
+        //    }
+        //};
+        xmlhttp.open("GET", "classes/getClasses.php", true);
+        xmlhttp.send();
 
-  console.log(str);
+  return data;
+
+  console.log(data);
 }
 
-function supprimerEleve(){
-  alert("BANG ! You are dead ! Not big surprise.");
+function getResponsables(){
+  var data;
+  var xmlhttp = new XMLHttpRequest();
+        //xmlhttp.onreadystatechange = function() {
+            //if (this.readyState == 4 && this.status == 200) {
+                data = (this.responseText);
+            //}
+        //};
+        xmlhttp.open("GET", "classes/getResponsables.php", true);
+        xmlhttp.send();
+
+  return data;
+
+  console.log(data);
 }
 
 function addEleve(){
-  document.getElementById("main_menu").innerHTML="<div>Prenom:<br><input type='text' id='prenom' value=''><br>Nom:<br><input type='text' id='nom' value=''><br>Date de Naissance (aaaa-mm-dd):<br><input type='text' id='date' value=''><br>Sexe:<br><select id='sex' value=''><option value='Masculin'>Masculin</option><option value='Feminin'>Féminin</option></select><br><button onClick='envoyerEleve();'>Envoyer</button></div> ";
+  var classes = getClasses();
+  var responsables = getResponsables();
+  document.getElementById("main_menu").innerHTML="<div>Prenom:<br><input type='text' id='prenom' value=''><br>Nom:<br><input type='text' id='nom' value=''><br>Date de Naissance (aaaa-mm-dd):<br><input type='text' id='date' value=''><br>Sexe:<br><select id='sex' value=''><option value='Masculin'>Masculin</option><option value='Feminin'>Féminin</option></select><br>" + classes + "<br>" + responsables + "<br><button onClick='envoyerEleve();'>Envoyer</button></div>";
 }
 
 function envoyerEleve(){
